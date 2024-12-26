@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,6 +31,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (data.isNotEmpty) {
       //----send to server
     }
+    await Isolate.spawn(isolateTask, "port");
+  }
+  //----Perform Task with isolate
+  void isolateTask(port){
+
   }
 
   //----update notes by id
@@ -110,7 +116,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       debugPrint("---$e--$st");
     } finally {
       emit(state.copyWith(isLoading: false));
-//-----For background task. when user will com on home page and after 5 min. 
+//-----For background task. when user will com on home page and after 5 min.
       //initializeBackgroundService();
     }
   }

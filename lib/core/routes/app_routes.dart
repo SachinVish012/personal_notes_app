@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:personal_notes/core/routes/routes.dart';
 import 'package:personal_notes/modules/auth/authentication.dart';
+import 'package:personal_notes/modules/auth/bloc/auth_bloc.dart';
 import 'package:personal_notes/modules/home/bloc/home_bloc.dart';
 import 'package:personal_notes/modules/home/home_screen.dart';
 import 'package:personal_notes/modules/home/pages/add_notes.dart';
@@ -12,13 +13,16 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class AppRoutes {
   static final GoRouter _router = GoRouter(
-    initialLocation: Routes.home,
+    initialLocation: Routes.auth,
     navigatorKey: navigatorKey,
     routes: [
       GoRoute(
         path: Routes.auth,
         builder: (context, state) {
-          return const Authentication();
+          return BlocProvider(
+            create: (context) => serviceLocator.get<AuthBloc>(),
+            child: const Authentication(),
+          );
         },
       ),
       GoRoute(
